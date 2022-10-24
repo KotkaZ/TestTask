@@ -16,31 +16,84 @@ externalDocs:
 tags:
   - name: Sector
     description: API for services related managing manufacturing sectors.
+  - name: FormData
+    description: API for services related handling user form input.
 
 paths:
-  /test:
+  /sectors:
     get:
-      operationId: initRepo
+      operationId: getSectors
       tags:
         - Sector
-      summary: Generation test endpoint.
+      summary: Queries all available sectors for selection.
       description:
-        Generation test endpoint.
+        Selects all sectors stored in database and returns them as an array of sectors.
       responses:
         '200':
-          description: Successful query returns a test response item.
+          description: Successful query returns an array of sectors.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Test'
+                type: array
+                items:
+                  $ref: '#/components/schemas/Sector'
+
+  /form-data:
+    post:
+      operationId: saveFormData
+      tags:
+        - FormData
+      summary: Saves user form data input.
+      description:
+        Parses and validates user form data input and saves it into the database.
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/FormData'
+      responses:
+        '200':
+          description: Successfully saved form data.
+
+    get:
+      operationId: getSavedFormData
+      tags:
+        - FormData
+      responses:
+        '200':
+          description: Successful query returns an array of sectors.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormData'
 
 components:
   schemas:
-    Test:
+    Sector:
       type: object
       properties:
-        id:
+        value:
           type: integer
-        testProp:
+          description: Sector integer value code
+        name:
           type: string
-          description: TestProp
+          description: Sector name
+
+    FormData:
+      type: object
+      required:
+        - name
+        - sector
+        - agreement
+      properties:
+        name:
+          type: string
+          minimum: 1
+          description: User name as text input value.
+        sector:
+          type: integer
+          description: Sector value.
+        agreement:
+          type: boolean
+          description: Agreement to form terms and policies.
