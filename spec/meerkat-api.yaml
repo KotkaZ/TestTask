@@ -1,0 +1,46 @@
+openapi: 3.0.3
+info:
+  title: Meerkat API
+  version: 0.0.1
+  description: |
+    This API is only used by Meerkat frontend application for mocking purposes.
+
+servers:
+  - url: http://localhost:8080/
+    description: Local development server
+
+externalDocs:
+  url: https://swagger.io/specification/
+  description: Find more information about OAS3.0 standard.
+
+tags:
+  - name: Sector
+    description: API for services related managing manufacturing sectors.
+
+paths:
+  /test:
+    get:
+      operationId: initRepo
+      tags:
+        - Sector
+      summary: Generation test endpoint.
+      description:
+        Generation test endpoint.
+      responses:
+        '200':
+          description: Successful query returns a test response item.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Test'
+
+components:
+  schemas:
+    Test:
+      type: object
+      properties:
+        id:
+          type: integer
+        testProp:
+          type: string
+          description: TestProp
